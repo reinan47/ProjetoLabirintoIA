@@ -5,6 +5,7 @@
 package buscalargura;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 /**
@@ -12,19 +13,72 @@ import java.util.Queue;
  * @author Reinan
  */
 public class BuscaLargura extends VerificarVisitados{
+    private int boneco;
+    private int objetivo;
+    //int [][] tabuleiro = new int [13][17];
+    private int [] predecessor = new int [221];
+    private int [] visitados = new int [221];
+    private int [] caminho = new int [110];
+    private int parede = 0;
 
+    public BuscaLargura() {
+    }
+
+    public void setBoneco(int boneco) {
+        this.boneco = boneco;
+    }
+
+    public void setObjetivo(int objetivo) {
+        this.objetivo = objetivo;
+    }
+
+    public void setPredecessor(int[] predecessor) {
+        this.predecessor = predecessor;
+    }
+
+    public void setVisitados(int[] visitados) {
+        this.visitados = visitados;
+    }
+
+    public void setCaminho(int[] caminho) {
+        this.caminho = caminho;
+    }
+
+    public void setParede(int parede) {
+        this.parede = parede;
+    }
+
+    public int getBoneco() {
+        return boneco;
+    }
+
+    public int getObjetivo() {
+        return objetivo;
+    }
+
+    public int[] getPredecessor() {
+        return predecessor;
+    }
+
+    public int[] getVisitados() {
+        return visitados;
+    }
+
+    public int[] getCaminho() {
+        return caminho;
+    }
+
+    public int getParede() {
+        return parede;
+    }
     /**
      * @param args the command line arguments
      */
     int[] BuscaLargura(){
         Queue<Integer> fila = new LinkedList<>();
-        int boneco;
-        int objetivo;
-        //int [][] tabuleiro = new int [13][17];
-        int [] predecessor = new int [221];
-        int [] visitados = new int [221];
-        int [] caminho = new int [110];
-        int parede = 0;
+        List<Integer> ListaCaminho = new LinkedList<>();
+        LinhaColuna lc[] = new LinhaColuna[110];
+
         int [][] tabuleiro = {
             {  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
             { 18, 19, 20, 21, 22, 23, 24, 25,  0, 27, 28, 29, 30, 31, 32, 33,  0},
@@ -78,7 +132,7 @@ public class BuscaLargura extends VerificarVisitados{
                     if(tabuleiro[i][j] == fila.peek()){
                         //verificar extremo de coluna negativa
                         if(j-1 == -1 || tabuleiro[i][j-1] == parede){
-                            System.out.println("coluna -");
+                            System.out.println("Não expande na esquerda");
                         }else{
                             //condição onde chama metodo de verificação dos estados ja alcançados
                             if(!ListaVisitado.visitado(tabuleiro[i][j-1], visitados)){
@@ -89,7 +143,7 @@ public class BuscaLargura extends VerificarVisitados{
                         }
                         //verificar extremo de linha maxima
                         if(i+1 == 13 || tabuleiro[i+1][j] == parede){
-                            System.out.println("linha +");    
+                            System.out.println("Não expande em baixo");    
                         }else{
                             if(!ListaVisitado.visitado(tabuleiro[i+1][j], visitados)){
                                 visitados[++contadorVisitados] = tabuleiro[i+1][j];
@@ -100,7 +154,7 @@ public class BuscaLargura extends VerificarVisitados{
                         }
                         //verificar coluna maxima
                         if(j+1 == 17 || tabuleiro[i][j+1] == parede){
-                            System.out.println("coluna +"); 
+                            System.out.println("Não expande na direita"); 
                         }else{
                             if(!ListaVisitado.visitado(tabuleiro[i][j+1], visitados)){ 
                                 visitados[++contadorVisitados] = tabuleiro[i][j+1]; 
@@ -110,7 +164,7 @@ public class BuscaLargura extends VerificarVisitados{
                         }
                         //verificar linha negativa
                         if(i-1 == -1 || tabuleiro[i-1][j] == parede){
-                            System.out.println("linha -"); 
+                            System.out.println("Não expande em cima"); 
                         }else{
                             if(!ListaVisitado.visitado(tabuleiro[i-1][j], visitados)){
                                 visitados[++contadorVisitados] = tabuleiro[i-1][j];
@@ -134,7 +188,7 @@ public class BuscaLargura extends VerificarVisitados{
                 System.out.println("Objetivo inalcançável");
                 System.exit(0);
             }
-            System.out.println(fila.peek());
+            System.out.println("Expandir = " + fila.peek());
             System.out.println(fila);
             fila.poll();
             
@@ -155,9 +209,21 @@ public class BuscaLargura extends VerificarVisitados{
         for(int a = 0 ; a < 110 ; a++){
             if(caminho[a] == 0)
                 break;
-            System.out.print(caminho[a]+" - ");
+            ListaCaminho.add(0,caminho[a]);
         }
-        
+        System.out.println("\n"+ListaCaminho);
+        contador = 0;
+        //pegando os indices do caminho percorrido usando busca em largura na matriz
+        for(Integer elemento : ListaCaminho){
+            for(int i = 0 ; i < 13 ; i++){
+                for(int j = 0 ; j < 17 ; j++){
+                    if(tabuleiro[i][j] == elemento){
+                        lc[contador++] = new LinhaColuna(i, j);
+                    }
+                }
+            }
+        }
+        System.out.println(lc[0].getColuna());
         return caminho;
     }
     

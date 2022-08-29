@@ -4,9 +4,13 @@
  */
 package buscalargura;
 
+import Interface.Painel;
+import java.awt.Color;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.concurrent.TimeUnit;
+import javax.swing.JButton;
 
 /**
  *
@@ -15,11 +19,25 @@ import java.util.Queue;
 public class BuscaLargura extends VerificarVisitados{
     private int boneco;
     private int objetivo;
-    //int [][] tabuleiro = new int [13][17];
     private int [] predecessor = new int [221];
     private int [] visitados = new int [221];
     private int [] caminho = new int [110];
     private int parede = 0;
+    public int [][] tabuleiro = {
+            {  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+            {  0, 19, 20, 21, 22, 23, 24, 25,  26, 27, 28, 29, 0, 31, 32, 33,  0},
+            {  0, 36,  0, 38,  0,  0,  0,  0,  0, 44,  0,  0,  0,  0,  0, 50,  0},
+            {  0, 52,  0, 54, 55, 56,  0, 58, 59, 60, 61, 62, 63, 64,  0, 66,  0},
+            {  0,  0,  0,  0,  0, 73,  0,  0,  0, 77,  0,  0,  0, 81,  0, 83,  0},
+            {  0, 86, 87, 88, 89, 90,  0, 92, 93, 94,  0, 96, 97, 98, 99,100,  0},
+            {  0,103,  0,105,  0,  0,  0,  0,  0,110,  0,112,  0,  0,  0,116,  0},
+            {  0,119,  0,121,122,123,124,125,  0,127,128,129,  0,131,132,133,  0},
+            {  0,135,  0,  0,  0,  0,140,  0,  0,143,  0,145,  0,147,  0,  0,  0},
+            {  0,152,  0,154,155,156,157,158,159,160,  0,162,163,164,165,166,  0},
+            {  0,168,  0,170,  0,  0,  0,  0,  0,  0,  0,178,  0,  0,  0,182,  0},
+            {  0,185,186,187,  0,189,190,191,192,193,194,195,  0,197,198,199,200},
+            {  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0}    
+        };
 
     public BuscaLargura() {
     }
@@ -74,28 +92,11 @@ public class BuscaLargura extends VerificarVisitados{
     /**
      * @param args the command line arguments
      */
-    int[] BuscaLargura(){
+    public Object[] BuscaLargura(){
         Queue<Integer> fila = new LinkedList<>();
         List<Integer> ListaCaminho = new LinkedList<>();
         LinhaColuna lc[] = new LinhaColuna[110];
-
-        int [][] tabuleiro = {
-            {  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
-            { 18, 19, 20, 21, 22, 23, 24, 25,  0, 27, 28, 29, 30, 31, 32, 33,  0},
-            {  0, 36,  0, 38,  0,  0,  0,  0,  0, 44,  0,  0,  0,  0,  0, 50,  0},
-            {  0, 52,  0, 54, 55, 56,  0, 58, 59, 60, 61, 62, 63, 64,  0, 66,  0},
-            {  0,  0,  0,  0,  0, 73,  0,  0,  0,  0,  0,  0,  0, 81,  0, 83,  0},
-            {  0, 86, 87, 88, 89, 90,  0, 92, 93, 94,  0, 96, 97, 98,  0,100,  0},
-            {  0,103,  0,105,  0,  0,  0,  0,  0,110,  0,112,  0,  0,  0,116,  0},
-            {  0,119,  0,121,122,123,124,125,  0,127,  0,129,  0,131,132,133,  0},
-            {  0,135,  0,  0,  0,  0,  0,  0,  0,143,  0,145,  0,147,  0,  0,  0},
-            {  0,152,  0,154,155,156,157,158,159,160,  0,162,  0,164,165,166,  0},
-            {  0,168,  0,170,  0,  0,  0,174,  0,  0,  0,178,  0,  0,  0,182,  0},
-            {  0,185,186,187,  0,189,190,191,192,193,194,195,  0,197,198,199,200},
-            {  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0}    
-        };
         VerificarVisitados ListaVisitado = new VerificarVisitados();
-
         /*int cont = 1;
         
         for(int i = 0 ; i < 13 ; i++){
@@ -104,7 +105,18 @@ public class BuscaLargura extends VerificarVisitados{
             }
         }*/
         //origem do boneco
-        boneco = tabuleiro[1][0];
+               
+           int lin = (int) (Math.random()*13);
+           int col = (int) (Math.random()*17);
+           
+        while(tabuleiro[lin][col] == 0){
+           lin = (int) (Math.random()*13);
+           col = (int) (Math.random()*17);
+        }
+        boneco = tabuleiro[lin][col];
+            
+        
+
         //origem do objetivo
         objetivo = tabuleiro[11][16];
         visitados[0]=boneco;
@@ -223,8 +235,6 @@ public class BuscaLargura extends VerificarVisitados{
                 }
             }
         }
-        System.out.println(lc[0].getColuna());
-        return caminho;
-    }
-    
+        return lc;
+    } 
 }

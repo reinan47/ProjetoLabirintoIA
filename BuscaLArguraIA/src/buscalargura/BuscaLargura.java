@@ -4,7 +4,7 @@
  */
 package buscalargura;
 
-import Interface.Painel;
+import Interface.Busca;
 import java.awt.Color;
 import java.util.LinkedList;
 import java.util.List;

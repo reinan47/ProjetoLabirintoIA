@@ -5,8 +5,12 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import buscalargura.BuscaLargura;
 import buscalargura.LinhaColuna;
+import java.awt.Font;
 import java.awt.SystemColor;
 import static java.lang.System.exit;
+import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -16,17 +20,16 @@ import javax.swing.JPanel;
  *
  * @author Reinan
  */
-public class Painel extends JPanel{
-    JButton b = new JButton("SAIR");
-    public Painel(){
+public class Busca extends JPanel{
+    JButton b = new JButton("Exit");
+    public Busca(){
         this.setLayout(null);
         this.setSize(1000,700);
-        this.setBackground(SystemColor.YELLOW);
+        this.setBackground(SystemColor.LIGHT_GRAY);
         b.setBounds(450, 600, 100, 40);
-        b.setBackground(SystemColor.LIGHT_GRAY);
+        b.setBackground(SystemColor.RED);
         b.setBorderPainted(false);
         add(b);
-        
         
         b.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -41,10 +44,9 @@ public class Painel extends JPanel{
         BuscaLargura bl = new BuscaLargura();
         JLabel titulo = new JLabel("BUSCA EM LARGURA");
         LinhaColuna[] caminho = bl.BuscaLargura();
- 
-        Painel p = new Painel();
-        JFrame ja = new JFrame("");
         
+        Busca p = new Busca();
+        JFrame ja = new JFrame("");        
         
         p.setBounds(0, 0, 50, 800);
         ja.setBounds(0, 0, 1000, 700);
@@ -53,10 +55,11 @@ public class Painel extends JPanel{
         ja.setVisible(true);
         ja.setDefaultCloseOperation(ja.EXIT_ON_CLOSE);
         
- 
-        titulo.setBounds(440, 10, 200, 30);
-        p.add(titulo);
         
+        titulo.setBounds(440, 10, 200, 30);
+        titulo.setFont(Font.getFont(TOOL_TIP_TEXT_KEY));
+       
+        p.add(titulo);
         int cont = 0;
         for(int i = 0 ; i < 18 ; i++){
             for(int j = 0 ; j < 17 ; j++){
@@ -70,7 +73,7 @@ public class Painel extends JPanel{
             for(int j = 0 ; j < 17 ; j++){
                 if(bl.tabuleiro[i][j] == 0){
                     parede[cont].setBounds(70+(j*50), 40+(i*30), 50, 30);
-                    parede[cont].setBackground(SystemColor.GREEN);
+                    parede[cont].setBackground(SystemColor.BLACK);
                     parede[cont].setBorderPainted(false);
                     p.add(parede[cont]);
                     p.revalidate();
@@ -79,21 +82,20 @@ public class Painel extends JPanel{
                 }
             }
         }
-        
         boolean aux = true;
         for(int i = 0 ; i < 110 ; i++){
             if(caminho[i] != null){
-                origem.setBackground(SystemColor.BLACK);
-                origem.setBounds(70+(caminho[i].getColuna()*50), 40+(caminho[i].getLinha()*30), 50, 30);
+                origem.setBackground(SystemColor.RED);
+                origem.setBounds(75+(caminho[i].getColuna()*50), 45+(caminho[i].getLinha()*30), 40, 20);
                 TimeUnit.MILLISECONDS.sleep(500);
-                origem.setBorderPainted(false);
+                origem.setBorderPainted(true);
                 p.add(origem);
                 p.revalidate();
                 ja.repaint();
                 if(aux){
-                    TimeUnit.SECONDS.sleep(2);
+                    TimeUnit.SECONDS.sleep(3);
                     aux = false;
-                }     
+                }   
             }else{
                 break;
             }

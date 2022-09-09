@@ -8,9 +8,6 @@ import buscalargura.LinhaColuna;
 import java.awt.Font;
 import java.awt.SystemColor;
 import static java.lang.System.exit;
-import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
